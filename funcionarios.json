@@ -1,1 +1,22 @@
-
+[
+  {
+    "nome": "Eng. Ronilson Richardson F. de Souza",
+    "cargo": "Responsável Técnico (RT)",
+    "registro": "CREA-MG Solicitado"
+  },
+  {
+    "nome": "Roberto Silva",
+    "cargo": "Engenheiro Civil Pleno",
+    "registro": "CREA-MG 123456"
+  },
+  {
+    "nome": "Carlos Souza",
+    "cargo": "Mestre de Obras / Eletricista",
+    "registro": "Técnico"
+  },
+  {
+    "nome": "Lucas Mendes",
+    "cargo": "Técnico de Redes e Telecomunicações",
+    "registro": "CFT-MG 789101"
+  }
+]
