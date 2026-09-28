@@ -1,1 +1,92 @@
-
+[
+  {
+    "nome": "Tijolo Baiano 8 Furos (9x19x19)",
+    "categoria": "Construção Civil",
+    "tipo": "m²",
+    "consumo": 30.0
+  },
+  {
+    "nome": "Cimento CP-II (Saco de 50kg)",
+    "categoria": "Construção Civil",
+    "tipo": "m²",
+    "consumo": 0.5
+  },
+  {
+    "nome": "Areia Média Lavada",
+    "categoria": "Construção Civil",
+    "tipo": "m²",
+    "consumo": 0.04
+  },
+  {
+    "nome": "Cabo Flexível Antichama 2.5mm²",
+    "categoria": "Elétrica",
+    "tipo": "comodo",
+    "consumo": 15.0
+  },
+  {
+    "nome": "Cabo Flexível Antichama 4.0mm²",
+    "categoria": "Elétrica",
+    "tipo": "comodo",
+    "consumo": 10.0
+  },
+  {
+    "nome": "Cabo Flexível Antichama 16mm²",
+    "categoria": "Elétrica",
+    "tipo": "m²",
+    "consumo": 1.0
+  },
+  {
+    "nome": "Disjuntor Din Monofásico 20A",
+    "categoria": "Elétrica",
+    "tipo": "comodo",
+    "consumo": 1.0
+  },
+  {
+    "nome": "Cabo de Rede Cat6 UTP",
+    "categoria": "Rede",
+    "tipo": "comodo",
+    "consumo": 25.0
+  },
+  {
+    "nome": "Conector RJ45 Cat6 Keystones",
+    "categoria": "Rede",
+    "tipo": "comodo",
+    "consumo": 2.0
+  },
+  {
+    "nome": "Tubo de Cobre Flexível p/ Gás 15mm",
+    "categoria": "Gás",
+    "tipo": "m²",
+    "consumo": 1.1
+  },
+  {
+    "nome": "Regulador de Gás GLP 7kg/h",
+    "categoria": "Gás",
+    "tipo": "comodo",
+    "consumo": 1.0
+  },
+  {
+    "nome": "Tubo Soldável Marrom PVC 25mm",
+    "categoria": "Hidráulica",
+    "tipo": "m²",
+    "consumo": 1.5
+  },
+  {
+    "nome": "Tubo de Esgoto Predial PVC 100mm",
+    "categoria": "Hidráulica",
+    "tipo": "m²",
+    "consumo": 0.5
+  },
+  {
+    "nome": "Cabo Coaxial Digital RG6 60% Malha",
+    "categoria": "TV",
+    "tipo": "comodo",
+    "consumo": 12.0
+  },
+  {
+    "nome": "Divisor de Sinal TV 3 Saídas (5-1000MHz)",
+    "categoria": "TV",
+    "tipo": "comodo",
+    "consumo": 1.0
+  }
+]
