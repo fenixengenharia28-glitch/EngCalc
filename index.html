@@ -1,1 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fênix EngCalculus-Pro</title>
+    <!-- Importação do Tailwind CSS para o design visual moderno -->
+    <script src="https://tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
 
+    <div class="max-w-6xl mx-auto p-6">
+        <!-- CABEÇALHO DO APLICATIVO -->
+        <header class="mb-8 text-center bg-white p-6 rounded-lg shadow-sm border-b-4 border-blue-600">
+            <h1 class="text-3xl font-bold text-blue-600">F-nix EngCalculus-Pro 🏗️</h1>
+            <p class="text-gray-500 font-semibold text-sm mt-1">Fênix Engenharia e Comércio LTDA — Controle Permanente</p>
+        </header>
+
+        <!-- MENU SUPERIOR DE NAVEGAÇÃO -->
+        <div class="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-2">
+            <button onclick="switchTab('calculo')" class="tab-btn py-2 px-4 bg-blue-600 text-white font-medium rounded-t-lg transition">
+                📊 Solicitar Quantitativo
+            </button>
+            <button onclick="switchTab('cad-material')" class="tab-btn py-2 px-4 bg-gray-200 text-gray-700 font-medium rounded-t-lg hover:bg-gray-300 transition">
+                ➕ Cadastrar Material
+            </button>
+            <button onclick="switchTab('cad-equipe')" class="tab-btn py-2 px-4 bg-gray-200 text-gray-700 font-medium rounded-t-lg hover:bg-gray-300 transition">
+                👥 Equipe & RTs
+            </button>
+            <button onclick="switchTab('cad-cliente')" class="tab-btn py-2 px-4 bg-gray-200 text-gray-700 font-medium rounded-t-lg hover:bg-gray-300 transition">
+                🏢 Cadastrar Cliente
+            </button>
+            <button onclick="switchTab('historico')" class="tab-btn py-2 px-4 bg-gray-200 text-gray-700 font-medium rounded-t-lg hover:bg-gray-300 transition">
+                💾 Histórico Total
+            </button>
+        </div>
+        <!-- ABA 1: SOLICITAR QUANTITATIVO -->
+        <div id="tab-calculo" class="tab-content bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Calcular e Associar Registro</h2>
+            
+            <!-- Escolha do Tipo de Entrada (Casa Inteira ou Cômodo) -->
+            <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <label class="block text-sm font-bold text-blue-800 mb-2">Escopo do Quantitativo:</label>
+                <div class="flex space-x-4">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" name="escopo-calculo" value="casa" checked onchange="ajustarLabelsEscopo()" class="form-radio text-blue-600">
+                        <span class="ml-2 font-medium text-sm text-blue-900">m² Global da Casa Inteira</span>
+                    </label>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="radio" name="escopo-calculo" value="comodo" onchange="ajustarLabelsEscopo()" class="form-radio text-blue-600">
+                        <span class="ml-2 font-medium text-sm text-blue-900">Detalhado por Cômodo Individual</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Campos do Formulário de Cálculo -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Selecione o Cliente / Obra:</label>
+                    <select id="calc-cliente" class="w-full p-2 border rounded bg-gray-50"></select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Responsável Técnico / Funcionário:</label>
+                    <select id="calc-responsavel" class="w-full p-2 border rounded bg-gray-50"></select>
+                </div>
+                <div>
+                    <label id="label-localizacao" class="block text-sm font-medium mb-1">Identificação (Ex: Casa Inteira):</label>
+                    <input type="text" id="calc-comodo" class="w-full p-2 border rounded" value="Casa Inteira">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Categoria Técnica:</label>
+                    <select id="calc-categoria" onchange="filtrarMateriais()" class="w-full p-2 border rounded">
+                        <option value="Construção Civil">Construção Civil</option>
+                        <option value="Elétrica">Elétrica</option>
+                        <option value="Rede">Rede</option>
+                        <option value="Gás">Gás</option>
+                        <option value="Hidráulica">Hidráulica</option>
+                        <option value="TV">TV</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Material:</label>
+                    <select id="calc-material" class="w-full p-2 border rounded bg-gray-50"></select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label id="label-medida" class="block text-sm font-medium mb-1">Metragem da Casa (m²):</label>
+                        <input type="number" id="calc-medida" class="w-full p-2 border rounded" value="100">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Perda (%):</label>
+                        <input type="number" id="calc-perda" class="w-full p-2 border rounded" value="10">
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="calcularQuantitativo()" class="mt-6 w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700 shadow-md transition">
+                Calcular e Vincular Histórico
+            </button>
+            
+            <!-- Painel de Exibição de Resultados -->
+            <div id="resultado-box" class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg hidden">
+                <h3 class="font-bold text-green-800 text-lg">Cálculo Processado com Sucesso:</h3>
+                <p id="resultado-texto" class="mt-2 text-green-900 font-mono text-sm whitespace-pre-wrap bg-white p-3 rounded border"></p>
+            </div>
+        </div>
+        <!-- ABA 2: CADASTRO DE MATERIAL -->
+        <div id="tab-cad-material" class="tab-content bg-white p-6 rounded-lg shadow-md hidden">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Adicionar Novo Item ao Catálogo</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nome Descritivo do Material:</label>
+                    <input type="text" id="cad-mat-nome" class="w-full p-2 border rounded" placeholder="Ex: Disjuntor Din Monofásico 20A">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Categoria Vinculada:</label>
+                    <select id="cad-mat-categoria" class="w-full p-2 border rounded">
+                        <option value="Construção Civil">Construção Civil</option>
+                        <option value="Elétrica">Elétrica</option>
+                        <option value="Rede">Rede</option>
+                        <option value="Gás">Gás</option>
+                        <option value="Hidráulica">Hidráulica</option>
+                        <option value="TV">TV</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Critério de Cálculo por Consumo Base:</label>
+                    <select id="cad-mat-tipo" class="w-full p-2 border rounded">
+                        <option value="m²">Proporcional por Metro Quadrado (m²)</option>
+                        <option value="comodo">Fixo por Unidade de Cômodo/Ponto</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Consumo Unitário de Referência:</label>
+                    <input type="number" id="cad-mat-consumo" class="w-full p-2 border rounded" value="1" step="0.01">
+                </div>
+            </div>
+            <button onclick="adicionarMaterial()" class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 shadow transition">
+                Salvar no Catálogo Local
+            </button>
+        </div>
+
+        <!-- ABA 3: CADASTRO DE EQUIPE -->
+        <div id="tab-cad-equipe" class="tab-content bg-white p-6 rounded-lg shadow-md hidden">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Cadastro de Responsáveis Técnicos e Colaboradores</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nome Completo:</label>
+                    <input type="text" id="cad-eq-nome" class="w-full p-2 border rounded" placeholder="Ex: Eng. Roberto Silva">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Função / Cargo Técnico:</label>
+                    <input type="text" id="cad-eq-cargo" class="w-full p-2 border rounded" placeholder="Ex: RT (CREA), Eletricista">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Registro Profissional:</label>
+                    <input type="text" id="cad-eq-registro" class="w-full p-2 border rounded" placeholder="Ex: CREA-MG 123456">
+                </div>
+            </div>
+            <button onclick="adicionarEquipe()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-700 shadow transition">
+                Registrar Colaborador
+            </button>
+        </div>
+        <!-- ABA 4: CADASTRO DE CLIENTES -->
+        <div id="tab-cad-cliente" class="tab-content bg-white p-6 rounded-lg shadow-md hidden">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Cadastro do Cliente e Local da Obra</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nome do Cliente / Identificação do Lote:</label>
+                    <input type="text" id="cad-cli-nome" class="w-full p-2 border rounded" placeholder="Ex: Condomínio Alphaville - Lote 5">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Endereço da Obra / Contato:</label>
+                    <input type="text" id="cad-cli-endereco" class="w-full p-2 border rounded" placeholder="Ex: Av. Principal, 1000">
+                </div>
+            </div>
+            <button onclick="adicionarCliente()" class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 shadow transition">
+                Registrar Cliente
+            </button>
+        </div>
+
+        <!-- ABA 5: HISTÓRICO TOTAL -->
+        <div id="tab-historico" class="tab-content bg-white p-6 rounded-lg shadow-md hidden">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Histórico de Registros Calculados</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse border rounded">
+                    <thead>
+                        <tr class="bg-gray-100 text-xs font-semibold uppercase text-gray-600 border-b">
+                            <th class="p-3 border">Cliente/Obra</th>
+                            <th class="p-3 border">Responsável Técnico</th>
+                            <th class="p-3 border">Escopo/Cômodo</th>
+                            <th class="p-3 border">Material / Cat.</th>
+                            <th class="p-3 border text-right">Resultado Final</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historico-tabela">
+                        <!-- Linha padrão exibida quando não há dados -->
+                        <tr id="historico-vazio">
+                            <td colspan="5" class="p-4 text-center text-gray-400">Nenhum cálculo efetuado nesta sessão ainda.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- SEÇÃO DE INTELIGÊNCIA E REGRAS DO APLICATIVO -->
+    <script>
+        // Bancos de Dados Estruturados em Memória (Catálogo Inicial do Sistema)
+        let materiais = [
+            {nome: "Tijolo Baiano 8 Furos", categoria: "Construção Civil", tipo: "m²", consumo: 30},
+            {nome: "Cabo Flexível Antichama 2.5mm", categoria: "Elétrica", tipo: "comodo", consumo: 15},
+            {nome: "Cabo de Rede Cat6 UTP", categoria: "Rede", tipo: "comodo", consumo: 25},
+            {nome: "Tubo de Cobre Flexível p/ Gás", categoria: "Gás", tipo: "m²", consumo: 1.1},
+            {nome: "Tubo Soldável PVC 25mm", categoria: "Hidráulica", tipo: "m²", consumo: 1.5},
+            {nome: "Cabo Coaxial Digital RG6", categoria: "TV", tipo: "comodo", consumo: 12}
+        ];
+
+        let equipe = [
+            {nome: "Eng. Roberto Silva", cargo: "Responsável Técnico (RT)", registro: "CREA-MG 123456"},
+            {nome: "Carlos Souza", cargo: "Mestre de Obras", registro: "Técnico"}
+        ];
+
+        let clientes = [
+            {nome: "Residencial Vale Verde - Lote 12", endereco: "Alameda das Palmeiras, 45"},
+            {nome: "Reforma Escritório Centro Comercial", endereco: "Av. Afonso Pena, 1500"}
+        ];
+
+        // Função para alternar visualmente entre as abas do menu
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+        }
+
+        // Função que ajusta dinamicamente os textos e inputs conforme o escopo (Casa ou Cômodo)
+        function ajustarLabelsEscopo() {
+            const escopo = document.querySelector('input[name="escopo-calculo"]:checked').value;
+            const labelLocal = document.getElementById('label-localizacao');
+            const inputLocal = document.getElementById('calc-comodo');
+            const labelMedida = document.getElementById('label-medida');
+
+            if (escopo === 'casa') {
+                labelLocal.innerText = "Identificação (Ex: Casa Inteira):";
+                inputLocal.value = "Casa Inteira";
+                labelMedida.innerText = "Metragem da Casa (m²):";
+            } else {
+                labelLocal.innerText = "Nome do Cômodo Individual:";
+                inputLocal.value = "Quarto 1";
+                labelMedida.innerText = "Metragem do Cômodo (m²):";
+            }
+        }
+        // Função para atualizar os menus (Dropdowns) com os dados atuais
+        function atualizarDropdowns() {
+            // Atualiza o menu de Clientes
+            const selCliente = document.getElementById('calc-cliente');
+            selCliente.innerHTML = '';
+            clientes.forEach(c => {
+                let opt = document.createElement('option');
+                opt.value = c.nome; opt.innerText = c.nome;
+                selCliente.appendChild(opt);
+            });
+
+            // Atualiza o menu de Funcionários / RTs
+            const selResp = document.getElementById('calc-responsavel');
+            selResp.innerHTML = '';
+            equipe.forEach(e => {
+                let opt = document.createElement('option');
+                opt.value = e.nome; opt.innerText = `${e.nome} (${e.cargo})`;
+                selResp.appendChild(opt);
+            });
+
+            // Atualiza a lista de materiais baseado na categoria padrão selecionada
+            filtrarMateriais();
+        }
+
+        // Função para filtrar os materiais de acordo com a categoria selecionada
+        function filtrarMateriais() {
+            const cat = document.getElementById('calc-categoria').value;
+            const selectMat = document.getElementById('calc-material');
+            selectMat.innerHTML = '';
+            
+            materiais.filter(m => m.categoria === cat).forEach(m => {
+                let opt = document.createElement('option');
+                opt.value = m.nome;
+                opt.innerText = `${m.nome} (Base: ${m.consumo} / ${m.tipo})`;
+                selectMat.appendChild(opt);
+            });
+        }
+
+        // MOTOR MATEMÁTICO: Executa as equações de quantitativo e insere no histórico
+        function calcularQuantitativo() {
+            const cliente = document.getElementById('calc-cliente').value;
+            const responsavel = document.getElementById('calc-responsavel').value;
+            const comodo = document.getElementById('calc-comodo').value || 'Geral';
+            const nomeMat = document.getElementById('calc-material').value;
+            const medida = parseFloat(document.getElementById('calc-medida').value);
+            const perda = parseFloat(document.getElementById('calc-perda').value);
+            const escopo = document.querySelector('input[name="escopo-calculo"]:checked').value;
+
+            const mat = materiais.find(m => m.nome === nomeMat);
+            if(!mat) return alert("Selecione um material válido.");
+
+            // Execução da fórmula: Medida x Consumo Técnico Base x Fator de Perda
+            const totalSemPerda = medida * mat.consumo;
+            const totalComPerda = totalSemPerda * (1 + (perda / 100));
+
+            // Estruturação do Log em formato de texto limpo
+            const textoLog = `[REGISTRO FÊNIX ENGENHARIA]\nEscopo: Módulo por ${escopo.toUpperCase()}\nCliente: ${cliente}\nRT/Funcionário: ${responsavel}\nLocal/Cômodo: ${comodo}\nItem Técnico: ${nomeMat} (${mat.categoria})\nCálculo: ${medida}m² base x ${mat.consumo} consumo base (+${perda}% perda)\nRecomendação de Compra: ${totalComPerda.toFixed(2)} unidades estruturadas.`;
+            
+            document.getElementById('resultado-texto').innerText = textoLog;
+            document.getElementById('resultado-box').classList.remove('hidden');
+
+            // Remove a mensagem de tabela vazia do histórico
+            const vazio = document.getElementById('historico-vazio');
+            if(vazio) vazio.remove();
+
+            // Renderiza dinamicamente a nova linha de resultado na tabela
+            let tr = document.createElement('tr');
+            tr.className = "border-b hover:bg-gray-50 text-sm";
+            tr.innerHTML = `
+                <td class="p-3 border">${cliente}</td>
+                <td class="p-3 border">${responsavel}</td>
+                <td class="p-3 border"><span class="text-xs bg-purple-100 text-purple-800 font-bold px-1.5 py-0.5 rounded mr-1">${escopo}</span> ${comodo}</td>
+                <td class="p-3 border"><span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold mr-1">${mat.categoria}</span> ${nomeMat}</td>
+                <td class="p-3 border text-right font-bold text-blue-600">${totalComPerda.toFixed(2)}</td>
+            `;
+            document.getElementById('historico-tabela').appendChild(tr);
+        }
+
+        // Função para cadastrar novos materiais em tempo de execução
+        function adicionarMaterial() {
+            const nome = document.getElementById('cad-mat-nome').value;
+            const cat = document.getElementById('cad-mat-categoria').value;
+            const tipo = document.getElementById('cad-mat-tipo').value;
+            const consumo = parseFloat(document.getElementById('cad-mat-consumo').value);
+
+            if(!nome) return alert('Por favor, defina o nome do item.');
+            materiais.push({nome, categoria: cat, tipo, consumo});
+            alert(`Material "${nome}" adicionado com sucesso!`);
+            document.getElementById('cad-mat-nome').value = '';
+            atualizarDropdowns();
+        }
+
+        // Função para cadastrar colaboradores/equipe técnica em tempo de execução
+        function adicionarEquipe() {
+            const nome = document.getElementById('cad-eq-nome').value;
+            const cargo = document.getElementById('cad-eq-cargo').value;
+            const registro = document.getElementById('cad-eq-registro').value || 'N/A';
+
+            if(!nome || !cargo) return alert('Insira Nome e Cargo do funcionário.');
+            equipe.push({nome, cargo, registro});
+            alert(`Colaborador "${nome}" integrado com sucesso!`);
+            document.getElementById('cad-eq-nome').value = '';
+            document.getElementById('cad-eq-cargo').value = '';
+            document.getElementById('cad-eq-registro').value = '';
+            atualizarDropdowns();
+        }
+
+        // Função para cadastrar novos clientes e lotes de obras em tempo de execução
+        function adicionarCliente() {
+            const nome = document.getElementById('cad-cli-nome').value;
+            const endereco = document.getElementById('cad-cli-endereco').value;
+
+            if(!nome) return alert('Insira o nome do Cliente.');
+            clientes.push({nome, endereco});
+            alert(`Cliente/Obra "${nome}" registrado com sucesso!`);
+            document.getElementById('cad-cli-nome').value = '';
+            document.getElementById('cad-cli-endereco').value = '';
+            atualizarDropdowns();
+        }
+
+        // Execução inicial automática do sistema ao carregar a página
+        atualizarDropdowns();
+    </script>
+</body>
+</html>
