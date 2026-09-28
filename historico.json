@@ -1,1 +1,13 @@
-
+[
+  {
+    "cliente_obra": "Residencial Vale Verde - Lote 12",
+    "responsavel_tecnico": "Eng. Ronilson Richardson F. de Souza",
+    "escopo": "casa",
+    "comodo_local": "Casa Inteira",
+    "material": "Cabo Flexível Antichama 16mm²",
+    "categoria": "Elétrica",
+    "medida_digitada": 120.0,
+    "perda_porcentagem": 10,
+    "resultado_final": 132.0
+  }
+]
