@@ -1,1 +1,18 @@
-
+[
+  {
+    "nome": "Fenix Engenharia e Comercio LTDA",
+    "endereco": "Sede Administrativa / Estoque Central"
+  },
+  {
+    "nome": "Residencial Vale Verde - Lote 12",
+    "endereco": "Alameda das Palmeiras, 45 - Bairro Lagoa"
+  },
+  {
+    "nome": "Reforma Escritório Centro Comercial",
+    "endereco": "Av. Afonso Pena, 1500 - Sala 402 - Centro"
+  },
+  {
+    "nome": "Condomínio Alphaville - Lote 5",
+    "endereco": "Av. Principal, Quadra C, Lote 05"
+  }
+]
